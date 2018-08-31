@@ -74,7 +74,7 @@ buttonMaker(topArray);
 
 
 const cardCreator = (image, index) => {
-    let card = $('<div class="card d-block" style="width:18rem">')
+    let card = $('<div class="card" style="width:18rem">')
     let cardImgTop = $('<img class="card-img-top loadedImg">').attr('src', image.data[index].images.fixed_height_still.url);
     let cardBody = $('<div class="card-body">');
     let cardTitle = $('<h5 class="card-title">').text(image.data[index].title.toUpperCase())
