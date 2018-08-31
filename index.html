@@ -16,33 +16,52 @@
 
     <div class="container" id="buttonContainer">
         <div class="row">
-            <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle" type="button" id="reactionsDropdown" data-toggle="dropdown">Reactions</button>
+            <div class="col-md-9 col-sm-12">
+                <div class="row">
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="reactionsDropdown" data-toggle="dropdown">Reactions</button>
 
-                <div class="dropdown-menu" id="reactionsButtons"></div>
+                        <div class="dropdown-menu" id="reactionsButtons"></div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="entertainmentDropdown"
+                            data-toggle="dropdown">Entertainment</button>
+
+                        <div class="dropdown-menu" id="entertainmentButtons"></div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="sportsDropdown" data-toggle="dropdown">Sports</button>
+
+                        <div class="dropdown-menu" id="sportsButtons"></div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown">User
+                            Picks</button>
+
+                        <div class="dropdown-menu" id="userButtons"></div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="favoritesDropdown" data-toggle="dropdown">Favorites</button>
+
+                        <div class="dropdown-menu" id="favoritesButtons"></div>
+                    </div>
+                </div>
             </div>
-            <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle" type="button" id="entertainmentDropdown" data-toggle="dropdown">Entertainment</button>
-
-                <div class="dropdown-menu" id="entertainmentButtons"></div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle" type="button" id="sportsDropdown" data-toggle="dropdown">Sports</button>
-
-                <div class="dropdown-menu" id="sportsButtons"></div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown">User
-                    Picks</button>
-
-                <div class="dropdown-menu" id="userButtons"></div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-dark dropdown-toggle" type="button" id="favoritesDropdown" data-toggle="dropdown">Favorites</button>
-
-                <div class="dropdown-menu" id="favoritesButtons"></div>
+            <div class="col-md-3 col-sm-12">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-dark" type="button"><img src="assets/img/glyphicons-28-search.png"></button>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+    <div class="container">
+        <div class="row"  id="cardContainer">
+
+        </div>
+        <button class="btn btn-dark float-right" id="moreButton">More...</button>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
