@@ -1,3 +1,4 @@
+
 const apiKey = 'jFTP0hxXWYCWZHqc5uV3OEr17ehNvRtf';
 let buttonCounter = 0;
 let favButtonCounter = 0;
@@ -81,9 +82,13 @@ const userButtons = (array) => {
 
 const favoriteButtonMaker = (array) => {
     while (favButtonCounter < array.length) {
-        $('#favoritesButtons').append('<a href="' + array[favButtonCounter].url + '"  target="_" class="dropdown-item gifButton" type="button">' + array[favButtonCounter].title)
+        let favUrl =  array[favButtonCounter].url 
+        let favTitle = array[favButtonCounter].title
+        $('#favoritesButtons').append('<a href="' + favUrl + '"  target="_" class="dropdown-item gifButton" type="button">' + favTitle)
+        console.log(document.cookie);
         favButtonCounter++;
     }
+    
 }
 
 const searchFunction = () => {
@@ -132,6 +137,7 @@ const favoriteFunction = function () {
 
     if (favoriteArray.indexOf(imgTitle) === -1) {
         favoriteArray.push({url: imgUrl, title: imgTitle})
+        document.cookie = "favorites = favoriteArray "
         console.log(favoriteArray);
         favoriteButtonMaker(favoriteArray);
     }
