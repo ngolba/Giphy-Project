@@ -1,10 +1,15 @@
-
 const apiKey = 'jFTP0hxXWYCWZHqc5uV3OEr17ehNvRtf';
 let buttonCounter = 0;
 let favButtonCounter = 0;
 let numOfImages = 10;
+let more = false;
+let currentTerm = '';
+let iterator = 0;
+let favoriteArray = [];
+let listOfTerms = [];
+let cookies = document.cookie;
 
-let topArray = [{
+let termArray = [{
         term: 'happy',
         category: 'reactions'
     }, {
@@ -54,18 +59,42 @@ let topArray = [{
     }
 ]
 
-let favoriteArray = [];
 
-let listOfTerms = [];
-let termGrabber = (initialArray, termsOnly) => {
+const termGrabber = (initialArray, termsOnly) => {
     for (var i = 0; i < initialArray.length; i++) {
         termsOnly.push(initialArray[i].term);
     }
 }
-termGrabber(topArray, listOfTerms);
+termGrabber(termArray, listOfTerms);
 
 
-const buttonMaker = (array) => {
+
+// const buttonMaker = (array) => {
+//     while (buttonCounter < array.length) {
+//         let buttonID = array[buttonCounter].category;
+//         $('#' + buttonID + 'Buttons').append('<button class="dropdown-item gifButton" type="button">' + array[buttonCounter].term)
+//         buttonCounter++;
+//     }
+// }
+
+// const userButtons = (array) => {
+//     while (buttonCounter < array.length) {
+//         $('#userButtons').append('<button class="dropdown-item gifButton" type="button">' + array[buttonCounter])
+//         buttonCounter++;
+//     }
+// }
+
+const favoriteButtonMaker = (array) => {
+    while (favButtonCounter < array.length) {
+        let favUrl = array[favButtonCounter].url
+        let favTitle = array[favButtonCounter].title
+        $('#favoritesButtons').append('<a href="' + favUrl + '"  target="_" class="dropdown-item gifButton" type="button">' + favTitle)
+        favButtonCounter++;
+    }
+
+}
+
+const universalButtonMaker = (array) => {
     while (buttonCounter < array.length) {
         let buttonID = array[buttonCounter].category;
         $('#' + buttonID + 'Buttons').append('<button class="dropdown-item gifButton" type="button">' + array[buttonCounter].term)
@@ -73,48 +102,10 @@ const buttonMaker = (array) => {
     }
 }
 
-const userButtons = (array) => {
-    while (buttonCounter < array.length) {
-        $('#userButtons').append('<button class="dropdown-item gifButton" type="button">' + array[buttonCounter])
-        buttonCounter++;
-    }
-}
 
-const favoriteButtonMaker = (array) => {
-    while (favButtonCounter < array.length) {
-        let favUrl =  array[favButtonCounter].url 
-        let favTitle = array[favButtonCounter].title
-        $('#favoritesButtons').append('<a href="' + favUrl + '"  target="_" class="dropdown-item gifButton" type="button">' + favTitle)
-        console.log(document.cookie);
-        favButtonCounter++;
-    }
-    
-}
 
-const searchFunction = () => {
-    let searchTerm = $("#searchText").val();
-    console.log(searchTerm);
-    $("#searchText").val('');
-    if (listOfTerms.indexOf(searchTerm) === -1) {
-        listOfTerms.push(searchTerm);
-        console.log(listOfTerms);
-        userButtons(listOfTerms);
-    }
 
-    currentTerm = searchTerm;
-    queryUrl = 'https://api.giphy.com/v1/gifs/search?q=' + currentTerm + '&limit=' + numOfImages + '&api_key=' + apiKey;
-    $('#cardContainer').empty();
-
-    $.get(queryUrl).then((response) => {
-        for (var i = 0; i < response.data.length; i++) {
-            cardCreator(response, i);
-        }
-
-    })
-
-}
-
-buttonMaker(topArray);
+universalButtonMaker(termArray);
 
 
 
@@ -136,11 +127,20 @@ const favoriteFunction = function () {
     let imgTitle = $(this).attr('title');
 
     if (favoriteArray.indexOf(imgTitle) === -1) {
-        favoriteArray.push({url: imgUrl, title: imgTitle})
-        document.cookie = "favorites = favoriteArray "
+        favoriteArray.push({
+            url: imgUrl,
+            title: imgTitle
+        })
         console.log(favoriteArray);
         favoriteButtonMaker(favoriteArray);
     }
+
+}
+
+const moreSetter = function () {
+    more = true;
+    numOfImages += 10;
+    gifGrabber(currentTerm)
 
 }
 
@@ -155,24 +155,49 @@ const imageAnimator = function () {
     }
 }
 
-const gifGrabber = function () {
-    let currentTerm = $(this).text();
-    let queryUrl = 'https://api.giphy.com/v1/gifs/search?q=' + currentTerm + '&limit=' + numOfImages + '&api_key=' + apiKey;
+/// gettin' giphy wit' it OR errybody in the div is getting giphy
+const gifGrabber = function (term) {
 
-    $('#cardContainer').empty();
-
+    let queryUrl = 'https://api.giphy.com/v1/gifs/search?q=' + term + '&limit=' + numOfImages + '&api_key=' + apiKey;
     $.get(queryUrl).then((response) => {
         console.log(response);
-        for (var i = 0; i < response.data.length; i++) {
-            cardCreator(response, i);
+        while (iterator < response.data.length) {
+            cardCreator(response, iterator);
+            iterator++;
         }
 
     })
-    // $('#moreButton').slideDown();
+    $('#moreButton').slideDown();
+    more = false;
 }
 
+const termClick = function () {
+    if (!more) {
+        numOfImages = 10;
+        $('#cardContainer').empty();
+        iterator = 0;
+        currentTerm = $(this).text();
+    }
 
-$(document).on('click', '.gifButton', gifGrabber)
+    gifGrabber(currentTerm);
+}
+
+const searchFunction = () => {
+    let searchTerm = $("#searchText").val();
+    $("#searchText").val('');
+    if (termArray.indexOf(searchTerm) === -1) {
+        termArray.push({
+            term: searchTerm,
+            category: 'user'
+        });
+        universalButtonMaker(termArray);
+        currentTerm = searchTerm;
+        gifGrabber(currentTerm);
+    }
+}
+
+$(document).on('click', '.gifButton', termClick)
 $(document).on('click', '.loadedImg', imageAnimator)
 $(document).on('click', '#searchButton', searchFunction)
 $(document).on('click', '.favoriteButton', favoriteFunction)
+$(document).on('click', '#moreButton', moreSetter)
