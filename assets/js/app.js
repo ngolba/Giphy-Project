@@ -178,14 +178,14 @@ const searchFunction = () => {
     }
 }
 
-let downloadFunction = function () {
-    downloadUrl = $(this).attr('href');
-    // console.log(downloadUrl);
-    // chrome.downloads.download({
-    //     url: downloadUrl
-    // });
+// let downloadFunction = function () {
+//     downloadUrl = $(this).attr('href');
+//     console.log(downloadUrl);
+//     chrome.downloads.download({
+//         url: downloadUrl
+//     });
     
-}
+// }
 
 // browser.runtime.sendMessage('Hey');
 
@@ -194,4 +194,4 @@ $(document).on('click', '.loadedImg', imageAnimator)
 $(document).on('click', '#searchButton', searchFunction)
 $(document).on('click', '.favoriteButton', favoriteFunction)
 $(document).on('click', '#moreButton', moreSetter)
-$(document).on('click', '.downloadBttn', downloadFunction)
+// $(document).on('click', '.downloadBttn', downloadFunction)
