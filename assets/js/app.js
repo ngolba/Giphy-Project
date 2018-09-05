@@ -178,15 +178,16 @@ const searchFunction = () => {
     }
 }
 
-let downloadFunction = function() {
+let downloadFunction = function () {
     downloadUrl = $(this).attr('href');
-    console.log(downloadUrl);
-    var downloading = chrome.browser.downloads.download({
-            url: downloadUrl,
-            filename:  "image-download.gif",
-            conflictAction: "uniquify"
-        });
-    }
+    // console.log(downloadUrl);
+    // chrome.downloads.download({
+    //     url: downloadUrl
+    // });
+    
+}
+
+// browser.runtime.sendMessage('Hey');
 
 $(document).on('click', '.gifButton', termClick)
 $(document).on('click', '.loadedImg', imageAnimator)
