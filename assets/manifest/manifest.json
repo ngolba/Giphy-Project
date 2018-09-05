@@ -1,0 +1,10 @@
+{
+    "permissions": [
+        "activeTab",
+        "downloads",
+        "cookies",
+        "fileSystem", 
+        {"fileSystem": ["write"]}, 
+        {"fileSystem": ["write", "retainEntries", "directory"]} 
+    ]
+}

@@ -8,6 +8,8 @@ let iterator = 0;
 let favoriteArray = [];
 let listOfTerms = [];
 let cookies = document.cookie;
+let downloadUrl = '';
+
 
 let termArray = [{
         term: 'happy',
@@ -59,31 +61,6 @@ let termArray = [{
     }
 ]
 
-
-const termGrabber = (initialArray, termsOnly) => {
-    for (var i = 0; i < initialArray.length; i++) {
-        termsOnly.push(initialArray[i].term);
-    }
-}
-termGrabber(termArray, listOfTerms);
-
-
-
-// const buttonMaker = (array) => {
-//     while (buttonCounter < array.length) {
-//         let buttonID = array[buttonCounter].category;
-//         $('#' + buttonID + 'Buttons').append('<button class="dropdown-item gifButton" type="button">' + array[buttonCounter].term)
-//         buttonCounter++;
-//     }
-// }
-
-// const userButtons = (array) => {
-//     while (buttonCounter < array.length) {
-//         $('#userButtons').append('<button class="dropdown-item gifButton" type="button">' + array[buttonCounter])
-//         buttonCounter++;
-//     }
-// }
-
 const favoriteButtonMaker = (array) => {
     while (favButtonCounter < array.length) {
         let favUrl = array[favButtonCounter].url
@@ -116,7 +93,7 @@ const cardCreator = (image, index) => {
     let cardTitle = $('<h5 class="card-title">').text(image.data[index].title.toUpperCase())
     let cardText = $('<p class="card-text">').text("Rating: " + image.data[index].rating.toUpperCase());
     let favoriteButton = $('<button img-url="' + image.data[index].url + '" title="' + image.data[index].title.toUpperCase() + '"' + 'class="btn btn-dark favoriteButton">Favorite</button>');
-    let downloadButton = $('<a href="' + image.data[index].images.fixed_height.url + '" download >' + '<img src="assets/img/glyphicons-201-download.png">Download')
+    let downloadButton = $('<a href="' + image.data[index].images.original.url + '"target="_blank" class="downloadBttn">' + '<img src="assets/img/glyphicons-201-download.png">Download')
     cardBody.append(cardTitle, cardText, favoriteButton, downloadButton);
     card.append(cardImgTop, cardBody);
     $('#cardContainer').append(card)
@@ -192,12 +169,28 @@ const searchFunction = () => {
         });
         universalButtonMaker(termArray);
         currentTerm = searchTerm;
+        if (!more) {
+            numOfImages = 10;
+            $('#cardContainer').empty();
+            iterator = 0;
+        }
         gifGrabber(currentTerm);
     }
 }
+
+let downloadFunction = function() {
+    downloadUrl = $(this).attr('href');
+    console.log(downloadUrl);
+    var downloading = chrome.browser.downloads.download({
+            url: downloadUrl,
+            filename:  "image-download.gif",
+            conflictAction: "uniquify"
+        });
+    }
 
 $(document).on('click', '.gifButton', termClick)
 $(document).on('click', '.loadedImg', imageAnimator)
 $(document).on('click', '#searchButton', searchFunction)
 $(document).on('click', '.favoriteButton', favoriteFunction)
 $(document).on('click', '#moreButton', moreSetter)
+$(document).on('click', '.downloadBttn', downloadFunction)
