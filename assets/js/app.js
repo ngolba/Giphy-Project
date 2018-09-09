@@ -7,8 +7,29 @@ let currentTerm = '';
 let iterator = 0;
 let favoriteArray = [];
 let listOfTerms = [];
-let cookies = document.cookie;
 let downloadUrl = '';
+
+// localStorage workaround 
+let favUrls = JSON.parse(localStorage.getItem('urls'))
+let favTitles = JSON.parse(localStorage.getItem('titles'));
+console.log(favUrls + ' ' + favTitles);
+
+if (!favUrls) {
+    favUrls = [];
+    favTitles = [];
+} else {
+    while (favoriteArray.length < favUrls.length) {
+        let memoryObject = {
+            url: favUrls[iterator],
+            title: favTitles[iterator]
+        }
+        favoriteArray.push(memoryObject);
+        iterator++
+    }
+}
+
+
+iterator = 0;
 
 
 let termArray = [{
@@ -65,11 +86,25 @@ const favoriteButtonMaker = (array) => {
     while (favButtonCounter < array.length) {
         let favUrl = array[favButtonCounter].url
         let favTitle = array[favButtonCounter].title
-        $('#favoritesButtons').append('<a href="' + favUrl + '"  target="_" class="dropdown-item gifButton" type="button">' + favTitle)
+
+        // workaround as localStorage can't read objects
+        if (favUrls.indexOf(favUrl) == -1) {
+            favUrls.push(favUrl);
+        favTitles.push(favTitle);
+        }
+        ///////////////
+
+        $('#favoritesButtons').append('<a href="' + favUrl + '"  target="_" class="dropdown-item gifButton" role="button">' + favTitle)
         favButtonCounter++;
     }
 
+    localStorage.setItem('urls', JSON.stringify(favUrls))
+    localStorage.setItem('titles', JSON.stringify(favTitles))
+    localStorage.setItem('array', JSON.stringify(array));
+
 }
+console.log(favoriteArray);
+favoriteButtonMaker(favoriteArray);
 
 const universalButtonMaker = (array) => {
     while (buttonCounter < array.length) {
@@ -103,18 +138,27 @@ const favoriteFunction = function () {
     let imgUrl = $(this).attr('img-url');
     let imgTitle = $(this).attr('title');
 
-    if (favoriteArray.indexOf(imgTitle) === -1) {
+    if ((favoriteArray.findIndex((finder) => finder.title == imgTitle)) === -1) {
         favoriteArray.push({
             url: imgUrl,
             title: imgTitle
         })
         console.log(favoriteArray);
         favoriteButtonMaker(favoriteArray);
+    } else {
+        console.log('already favorited');
     }
+
 
 }
 
-const moreSetter = function () {
+const clearFavorites = () => {
+    favoriteArray = [];
+    localStorage.clear();
+    $('#favoritesButtons').empty();
+}
+
+const moreSetter = () => {
     more = true;
     numOfImages += 10;
     gifGrabber(currentTerm)
@@ -184,3 +228,4 @@ $(document).on('click', '.loadedImg', imageAnimator)
 $(document).on('click', '#searchButton', searchFunction)
 $(document).on('click', '.favoriteButton', favoriteFunction)
 $(document).on('click', '#moreButton', moreSetter)
+$(document).on('click', '#clearButton', clearFavorites)
