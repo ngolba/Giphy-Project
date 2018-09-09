@@ -12,7 +12,6 @@ let downloadUrl = '';
 // localStorage workaround 
 let favUrls = JSON.parse(localStorage.getItem('urls'))
 let favTitles = JSON.parse(localStorage.getItem('titles'));
-console.log(favUrls + ' ' + favTitles);
 
 if (!favUrls) {
     favUrls = [];
@@ -94,7 +93,7 @@ const favoriteButtonMaker = (array) => {
         }
         ///////////////
 
-        $('#favoritesButtons').append('<a href="' + favUrl + '"  target="_" class="dropdown-item gifButton" role="button">' + favTitle)
+        $('#favoritesButtons').append(`<a href=${favUrl} target="_" class="dropdown-item gifButton" role="button">${favTitle}`)
         favButtonCounter++;
     }
 
@@ -103,13 +102,13 @@ const favoriteButtonMaker = (array) => {
     localStorage.setItem('array', JSON.stringify(array));
 
 }
-console.log(favoriteArray);
+
 favoriteButtonMaker(favoriteArray);
 
 const universalButtonMaker = (array) => {
     while (buttonCounter < array.length) {
         let buttonID = array[buttonCounter].category;
-        $('#' + buttonID + 'Buttons').append('<button class="dropdown-item gifButton" type="button">' + array[buttonCounter].term)
+        $(`#${buttonID}Buttons`).append('<button class="dropdown-item gifButton" type="button">' + array[buttonCounter].term)
         buttonCounter++;
     }
 }
@@ -126,9 +125,9 @@ const cardCreator = (image, index) => {
     let cardImgTop = $('<img class="card-img-top loadedImg">').attr('src', image.data[index].images.fixed_height_still.url);
     let cardBody = $('<div class="card-body">');
     let cardTitle = $('<h5 class="card-title">').text(image.data[index].title.toUpperCase())
-    let cardText = $('<p class="card-text">').text("Rating: " + image.data[index].rating.toUpperCase());
-    let favoriteButton = $('<button img-url="' + image.data[index].url + '" title="' + image.data[index].title.toUpperCase() + '"' + 'class="btn btn-dark favoriteButton">Favorite</button>');
-    let downloadButton = $('<a href="' + image.data[index].images.original.url + '"target="_blank" class="downloadBttn">' + '<img src="assets/img/glyphicons-201-download.png">Download')
+    let cardText = $('<p class="card-text">').text(`Rating:${image.data[index].rating.toUpperCase()}`);
+    let favoriteButton = $(`<button img-url=${image.data[index].url} title=${image.data[index].title.toUpperCase()} class="btn btn-dark favoriteButton">Favorite</button>`);
+    let downloadButton = $(`<a href=${image.data[index].images.original.url} target="_blank" class="downloadBttn">` + `<img src="assets/img/glyphicons-201-download.png">Download`)
     cardBody.append(cardTitle, cardText, favoriteButton, downloadButton);
     card.append(cardImgTop, cardBody);
     $('#cardContainer').append(card)
@@ -179,7 +178,7 @@ const imageAnimator = function () {
 /// gettin' giphy wit' it OR errybody in the div is getting giphy
 const gifGrabber = function (term) {
 
-    let queryUrl = 'https://api.giphy.com/v1/gifs/search?q=' + term + '&limit=' + numOfImages + '&api_key=' + apiKey;
+    let queryUrl = `https://api.giphy.com/v1/gifs/search?q=${term}&limit=${numOfImages}&api_key=${apiKey}`;
     $.get(queryUrl).then((response) => {
         console.log(response);
         while (iterator < response.data.length) {
