@@ -85,6 +85,7 @@ const favoriteButtonMaker = (array) => {
     while (favButtonCounter < array.length) {
         let favUrl = array[favButtonCounter].url
         let favTitle = array[favButtonCounter].title
+        console.log(favTitle)
 
         // workaround as localStorage can't read objects
         if (favUrls.indexOf(favUrl) == -1) {
@@ -93,7 +94,7 @@ const favoriteButtonMaker = (array) => {
         }
         ///////////////
 
-        $('#favoritesButtons').append(`<a href=${favUrl} target="_" class="dropdown-item gifButton" role="button">${favTitle}`)
+        $('#favoritesButtons').append(`<a href=${favUrl} target="_" class="dropdown-item" role="button">${favTitle}`)
         favButtonCounter++;
     }
 
@@ -127,7 +128,7 @@ const cardCreator = (image, index) => {
     let cardBody = $('<div class="card-body">');
     let cardTitle = $('<h5 class="card-title">').text(image.data[index].title.toUpperCase())
     let cardText = $('<p class="card-text">').text(`Rating:${image.data[index].rating.toUpperCase()}`);
-    let favoriteButton = $(`<button img-url=${image.data[index].url} title=${image.data[index].title.toUpperCase()} class="btn btn-dark favoriteButton">Favorite</button>`);
+    let favoriteButton = $(`<button img-url=${image.data[index].url} title="` + image.data[index].title.toUpperCase() +  `" class="btn btn-dark favoriteButton">Favorite</button>`);
     let downloadButton = $(`<a href=${image.data[index].images.original.url} target="_blank" class="downloadBttn">` + `<img src="assets/img/glyphicons-201-download.png">Download`)
     cardBody.append(cardTitle, cardText, favoriteButton, downloadButton);
     card.append(cardImgTop, cardBody);
@@ -138,7 +139,7 @@ const favoriteFunction = function () {
     let imgUrl = $(this).attr('img-url');
     let imgTitle = $(this).attr('title');
 
-    if ((favoriteArray.findIndex((finder) => finder.title == imgTitle)) === -1) {
+    if ((favoriteArray.findIndex((finder) => finder.url == imgUrl)) === -1) {
         favoriteArray.push({
             url: imgUrl,
             title: imgTitle
