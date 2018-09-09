@@ -89,7 +89,7 @@ const favoriteButtonMaker = (array) => {
         // workaround as localStorage can't read objects
         if (favUrls.indexOf(favUrl) == -1) {
             favUrls.push(favUrl);
-        favTitles.push(favTitle);
+            favTitles.push(favTitle);
         }
         ///////////////
 
@@ -119,6 +119,7 @@ const universalButtonMaker = (array) => {
 universalButtonMaker(termArray);
 
 
+// I'm positive this could be refactored but it's 2:39 AM 
 
 const cardCreator = (image, index) => {
     let card = $('<div class="card" style="width:18rem">')
