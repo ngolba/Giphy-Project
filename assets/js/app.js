@@ -155,7 +155,10 @@ const favoriteFunction = function () {
 
 const clearFavorites = () => {
     favoriteArray = [];
+    favUrls = [];
+    favTitles = [];
     localStorage.clear();
+    favButtonCounter = 0;
     $('#favoritesButtons').empty();
 }
 
